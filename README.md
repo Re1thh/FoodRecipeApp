@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# FoodRecipeApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A small single-page React app that searches recipes by keyword using the Edamam Recipe Search API and shows the results as a grid of cards. It is one screen with a search box and a results list; there is no routing, no backend and no saved state.
 
-## Available Scripts
+Built in 2023 while learning React and Tailwind CSS.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Search box and a Search button that query the Edamam recipe search endpoint with the typed keyword
+- Results grid (up to 30 recipes) showing each recipe's image, meal type, name and total calories (rounded)
+- The query also applies fixed filters set in code: a calorie range of 591-722 and the `alcohol-free` health label
+- Responsive card layout using Tailwind utility classes (1, 2 or 4 columns depending on screen width)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React 18 (Create React App, `react-scripts` 5.0.1)
+- Tailwind CSS 3
+- Edamam Recipe Search API (called directly from the browser with `fetch`)
 
-### `npm test`
+## Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js and npm
+- An Edamam developer account with an application ID and key for the Recipe Search API
 
-### `npm run build`
+## Configuration
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The Edamam app ID and key are currently written directly in `src/App.js`. Replace them with your own values. A better setup is to move them into a `.env.local` file (ignored by git) and read them as `process.env.REACT_APP_EDAMAM_ID` / `process.env.REACT_APP_EDAMAM_KEY`. Note that any key used in a browser app is visible to users.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The code calls the older `https://api.edamam.com/search` endpoint. Edamam's current API is v2 (`/api/recipes/v2`), so the request may need updating to work today.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## How to run
 
-### `npm run eject`
+```bash
+npm install
+npm start      # development server on http://localhost:3000
+npm run build  # production build into build/
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Tests
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`src/App.test.js` is the unchanged Create React App sample test. It looks for a "learn react" link that this app does not render, so `npm test` is expected to fail until the test is rewritten.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Project structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+src/
+  App.js        search input, Edamam request, holds results in state
+  output.js     results grid (recipe cards)
+  index.js      React entry point
+  index.css     Tailwind directives
+  safe.js       leftover static HTML card template (not imported)
+tailwind.config.js
+```
